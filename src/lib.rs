@@ -15,10 +15,10 @@ impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Ar
     /// A runtime analog of `format_args!` macro.
     /// # Examples:
     /// ```rust
-    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3]) // "1a2b3c"
-    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3, 4]) // "1a2b3c"
-    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2]) // "1a2bc"
-    /// dyn_fmt::Arguments::new("{{}}{}", &[1, 2]) // "{}1"
+    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3]); // "1a2b3c"
+    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3, 4]); // "1a2b3c"
+    /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2]); // "1a2bc"
+    /// dyn_fmt::Arguments::new("{{}}{}", &[1, 2]); // "{}1"
     /// ```
     pub fn new(fmt: F, args: I) -> Self { Arguments { fmt, args } }
 }
