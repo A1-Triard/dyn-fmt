@@ -14,3 +14,8 @@ fn main() {
     assert_eq!(format!("{}", dyn_fmt::Arguments::new("{{}}{}", &[1, 2])), "{}1");
 }
 ```
+## Comparision
+
+|      | [dyn_fmt](https://crates.io/crates/dyn_fmt) | [strfmt](https://crates.io/crates/strfmt) | [dynfmt](https://crates.io/crates/dynfmt) |
+|:----:|:-------------------------------------------:|:-----------------------------------------:|:-----------------------------------------:|
+|no_std|+                                            |-                                          |-                                          |
