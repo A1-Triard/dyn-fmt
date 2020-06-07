@@ -3,12 +3,16 @@
 use core::fmt::{self, Display};
 use core::hint::{unreachable_unchecked};
 
+/// This structure represents a format string combined with its arguments.
+/// In contrast with [`fmt::Arguments`](core::fmt::Arguments) this structure can be easily and safely created at runtime.
 pub struct Arguments<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> {
     fmt: F,
     args: I
 }
 
 impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Arguments<'a, F, T, I> {
+    /// Creates a new instance of a [`Display`](core::fmt::Display)able structure, representing formatted arguments.
+    /// A runtime analog of `format_args!` macro.
     pub fn new(fmt: F, args: I) -> Self { Arguments { fmt, args } }
 }
 
