@@ -16,7 +16,8 @@ fn main() {
 ```
 ## Comparision
 
-|                                           | [dyn_fmt](https://crates.io/crates/dyn_fmt) | [strfmt](https://crates.io/crates/strfmt) | [dynfmt](https://crates.io/crates/dynfmt) |
+|                                           | [dyn-fmt](https://crates.io/crates/dyn-fmt) | [strfmt](https://crates.io/crates/strfmt) | [dynfmt](https://crates.io/crates/dynfmt) |
 |:-----------------------------------------:|:-------------------------------------------:|:-----------------------------------------:|:-----------------------------------------:|
 |                 no_std                    |                      +                      |                       -                   |                      -                    |
 |Easy but powerfull API that you enjoy using|                      +                      |                      +/-                  |                      -                    |
+|               Nice license                |                      +                      |                      +/-                  |                      +/-                  |
