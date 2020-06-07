@@ -1,5 +1,11 @@
 [package]
 name = "dyn-fmt"
 version = "0.1.0"
-authors = ["Warlock <internalmike@gmail.com>"]
-edition = "2018"
+authors = ["warlock <internalmike@gmail.com>"]
+description = "Provides dynamic string format."
+readme = "README.md"
+documentation = "https://docs.rs/dyn-fmt/"
+keywords = ["string", "dynamic", "format", "fmt", "arguments", "str"]
+categories = ["no-std", "value-formatting"]
+license = "MIT/Apache-2.0"
+repository = "https://github.com/A1-Triard/dyn-fmt"
