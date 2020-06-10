@@ -5,8 +5,6 @@
 Provides dynamic string format.
 
 ```rust
-use dyn_fmt;
-
 fn main() {
     assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3])), "1a2b3c");
     assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3, 4])), "1a2b3c");

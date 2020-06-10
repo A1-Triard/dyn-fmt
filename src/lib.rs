@@ -5,6 +5,7 @@ use core::hint::{unreachable_unchecked};
 
 /// This structure represents a format string combined with its arguments.
 /// In contrast with [`fmt::Arguments`](core::fmt::Arguments) this structure can be easily and safely created at runtime.
+#[derive(Clone, Debug)]
 pub struct Arguments<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> {
     fmt: F,
     args: I
