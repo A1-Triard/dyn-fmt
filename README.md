@@ -5,12 +5,10 @@
 Provides dynamic string format.
 
 ```rust
-fn main() {
-    assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3])), "1a2b3c");
-    assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3, 4])), "1a2b3c");
-    assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2])), "1a2bc");
-    assert_eq!(format!("{}", dyn_fmt::Arguments::new("{{}}{}", &[1, 2])), "{}1");
-}
+assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3])), "1a2b3c");
+assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3, 4])), "1a2b3c");
+assert_eq!(format!("{}", dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2])), "1a2bc");
+assert_eq!(format!("{}", dyn_fmt::Arguments::new("{{}}{}", &[1, 2])), "{}1");
 ```
 ## Comparision
 
