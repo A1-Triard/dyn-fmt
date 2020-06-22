@@ -1,6 +1,12 @@
 #![deny(warnings)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
+//! |        Static format macro         |           Dynamic analog           |
+//! |:----------------------------------:|:----------------------------------:|
+//! |      [`format!`](std::format )     | [`format`](AsStrFormatExt::format) |
+//! | [`format_args!`](std::format_args) | [`Arguments::new`](Arguments::new) |
+//! |       [`write!`](std::write)       |      [`dyn_write!`](dyn_write)     |
+//!
 //! **Crate features**
 //!
 //! * `"std"`
