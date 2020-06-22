@@ -23,7 +23,7 @@ use std::hint::{unreachable_unchecked};
 /// Extends strings with the `format` method, which is a runtime analog of the [`format!`](std::format) macro.
 /// Unavailable in `no_std` environment.
 #[cfg(feature = "std")]
-pub trait AsStrFormatExt: AsRef<str> + Sized {
+pub trait AsStrFormatExt: AsRef<str> {
     /// Creates a [`String`](std::string::String) replacing the {}s within `self` using provided parameters in the order given.
     /// A runtime analog of [`format!`](std::format) macro. In contrast with the macro format string have not be a string literal.
     /// # Examples:
@@ -33,7 +33,7 @@ pub trait AsStrFormatExt: AsRef<str> + Sized {
     /// assert_eq!("{}a{}b{}c".format(&[1, 2, 3, 4]), "1a2b3c"); // extra arguments are ignored
     /// assert_eq!("{}a{}b{}c".format(&[1, 2]), "1a2bc"); // missing arguments are replaced by empty string
     /// assert_eq!("{{}}{}".format(&[1, 2]), "{}1");
-    fn format<'a, T: Display + ?Sized + 'a>(self, args: impl IntoIterator<Item=&'a T> + Clone) -> String {
+    fn format<'a, T: Display + ?Sized + 'a>(&self, args: impl IntoIterator<Item=&'a T> + Clone) -> String {
         format!("{}", Arguments::new(self, args))
     }
 }
@@ -160,6 +160,14 @@ mod tests {
         assert_eq!("{}a{}b{}c".format(&[1, 2, 3, 4]), "1a2b3c");
         assert_eq!("{}a{}b{}c".format(&[1, 2]), "1a2bc");
         assert_eq!("{{}}{}".format(&[1, 2]), "{}1");
+    }
+
+    #[cfg(feature = "std")]
+    #[test]
+    fn test_format_with_string_format() {
+        let format: String = "{}a{}b{}c".into();
+        assert_eq!(format.format(&[1, 2, 3]), "1a2b3c");
+        assert_eq!(format.format(&[2, 3, 4]), "2a3b4c");
     }
 
     struct Writer<'a> {
