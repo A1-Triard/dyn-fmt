@@ -211,6 +211,7 @@ mod tests {
         assert_eq!("123", &buf[.. len]);
     }
 
+    #[cfg(feature = "std")]
     #[test]
     fn format_unsized_args() {
         let args: &'static [&'static dyn Display] = &[&1, &2, &3];
