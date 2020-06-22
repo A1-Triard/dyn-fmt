@@ -1,6 +1,11 @@
 #![deny(warnings)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
+//! **Crate features**
+//!
+//! * `"std"`
+//! Enabled by default. Disable to make the library `#![no_std]`.
+
 #[cfg(not(feature = "std"))]
 pub(crate) mod std {
     pub use core::*;
@@ -9,6 +14,8 @@ pub(crate) mod std {
 use std::fmt::{self, Display};
 use std::hint::{unreachable_unchecked};
 
+/// Extends strings with the `format` method, which is a runtime analog of the [`format!`](std::format) macro.
+/// Unavailable in `no_std` environment.
 #[cfg(feature = "std")]
 pub trait AsStrFormatExt: AsRef<str> + Sized {
     /// Creates a [`String`](std::string::String) replacing the {}s within `self` using provided parameters in the order given.
@@ -28,6 +35,15 @@ pub trait AsStrFormatExt: AsRef<str> + Sized {
 #[cfg(feature = "std")]
 impl<T: AsRef<str> + Sized> AsStrFormatExt for T { }
 
+/// Writes formatted data into a buffer. A runtime analog of [`write!`](std::write) macro.
+/// In contrast with the macro format string have not be a string literal.
+/// 
+/// This macro accepts a 'writer', a format string, and a list of arguments.
+/// Arguments will be formatted according to the specified format string and the result will be passed to the writer.
+/// The writer may be any value with a `write_fmt` method; generally this comes from an implementation of either
+/// the [`fmt::Write`](std::fmt::Write) or the [`Write`](std::io::Write) trait.
+/// The macro returns whatever the `write_fmt` method returns;
+/// commonly a [`fmt::Result`](std::fmt::Result), or an [`io::Result`](std::io::Result).
 #[macro_export]
 macro_rules! dyn_write {
     ($dst:expr, $($arg:tt)*) => {
