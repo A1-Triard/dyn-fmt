@@ -1,8 +1,0 @@
-[package]
-name = "test-no_std"
-version = "0.0.0"
-publish = false
-authors = ["warlock <internalmike@gmail.com>"]
-
-[dependencies]
-dyn-fmt = { path = ".." }

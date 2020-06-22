@@ -1,7 +1,7 @@
 #![deny(warnings)]
-#![cfg_attr(not(has_std), no_std)]
+#![cfg_attr(not(feature = "std"), no_std)]
 
-#[cfg(not(has_std))]
+#[cfg(not(feature = "std"))]
 pub(crate) mod std {
     pub use core::*;
 }
@@ -9,20 +9,24 @@ pub(crate) mod std {
 use std::fmt::{self, Display};
 use std::hint::{unreachable_unchecked};
 
-/// Creates a [`String`](std::string::String) using interpolation of runtime expressions.
-/// A runtime analog of [`format!`](std::format) macro.
-/// The first argument is a format string. In contrast with [`format!`](std::format) macro this have not be a string literal.
-/// Additional parameters replace the {}s within the formatting string in the order given.
-/// # Examples:
-/// ```rust
-/// assert_eq!(format("{}a{}b{}c", &[1, 2, 3]), "1a2b3c");
-/// assert_eq!(format("{}a{}b{}c", &[1, 2, 3, 4]), "1a2b3c"); // extra arguments are ignored
-/// assert_eq!(format("{}a{}b{}c", &[1, 2]), "1a2bc"); // missing arguments are replaced by empty string
-/// assert_eq!(format("{{}}{}", &[1, 2]), "{}1");
-#[cfg(has_std)]
-pub fn format<'a, T: Display + ?Sized + 'a>(fmt: impl AsRef<str>, args: impl IntoIterator<Item=&'a T> + Clone) -> String {
-    format!("{}", Arguments::new(fmt, args))
+#[cfg(feature = "std")]
+pub trait AsStrFormatExt: AsRef<str> + Sized {
+    /// Creates a [`String`](std::string::String) replacing the {}s within `self` using provided parameters in the order given.
+    /// A runtime analog of [`format!`](std::format) macro. In contrast with the macro format string have not be a string literal.
+    /// # Examples:
+    /// ```rust
+    /// use dyn_fmt::AsStrFormatExt;
+    /// assert_eq!("{}a{}b{}c".format(&[1, 2, 3]), "1a2b3c");
+    /// assert_eq!("{}a{}b{}c".format(&[1, 2, 3, 4]), "1a2b3c"); // extra arguments are ignored
+    /// assert_eq!("{}a{}b{}c".format(&[1, 2]), "1a2bc"); // missing arguments are replaced by empty string
+    /// assert_eq!("{{}}{}".format(&[1, 2]), "{}1");
+    fn format<'a, T: Display + ?Sized + 'a>(self, args: impl IntoIterator<Item=&'a T> + Clone) -> String {
+        format!("{}", Arguments::new(self, args))
+    }
 }
+
+#[cfg(feature = "std")]
+impl<T: AsRef<str> + Sized> AsStrFormatExt for T { }
 
 /// This structure represents a format string combined with its arguments.
 /// In contrast with [`fmt::Arguments`](std::fmt::Arguments) this structure can be easily and safely created at runtime.
