@@ -28,6 +28,13 @@ pub trait AsStrFormatExt: AsRef<str> + Sized {
 #[cfg(feature = "std")]
 impl<T: AsRef<str> + Sized> AsStrFormatExt for T { }
 
+#[macro_export]
+macro_rules! dyn_write {
+    ($dst:expr, $($arg:tt)*) => {
+        write!($dst, "{}", $crate::Arguments::new($($arg)*))
+    }
+}
+
 /// This structure represents a format string combined with its arguments.
 /// In contrast with [`fmt::Arguments`](std::fmt::Arguments) this structure can be easily and safely created at runtime.
 #[derive(Clone, Debug)]
@@ -149,6 +156,16 @@ mod tests {
         }
     }
     
+    #[test]
+    fn test_write() {
+        let mut buf = [0u8; 128];
+        let buf = str::from_utf8_mut(&mut buf).unwrap();
+        let mut writer = Writer { buf, len: 0 };
+        dyn_write!(&mut writer, "{}a{}b{}c", &[1, 2, 3]).unwrap();
+        let len = writer.len;
+        assert_eq!("1a2b3c", &buf[.. len]);
+    }
+
     #[test]
     fn write_args() {
         let args_format = dyn_fmt::Arguments::new("{}{}{}", &[1, 2, 3]);
