@@ -1,20 +1,41 @@
 #![deny(warnings)]
-#![no_std]
+#![cfg_attr(not(has_std), no_std)]
 
-use core::fmt::{self, Display};
-use core::hint::{unreachable_unchecked};
+#[cfg(not(has_std))]
+pub(crate) mod std {
+    pub use core::*;
+}
+
+use std::fmt::{self, Display};
+use std::hint::{unreachable_unchecked};
+
+/// Creates a [`String`](std::string::String) using interpolation of runtime expressions.
+/// A runtime analog of [`format!`](std::format) macro.
+/// The first argument is a format string. In contrast with [`format!`](std::format) macro this have not be a string literal.
+/// Additional parameters replace the {}s within the formatting string in the order given.
+/// # Examples:
+/// ```rust
+/// assert_eq!(format("{}a{}b{}c", &[1, 2, 3]), "1a2b3c");
+/// assert_eq!(format("{}a{}b{}c", &[1, 2, 3, 4]), "1a2b3c"); // extra arguments are ignored
+/// assert_eq!(format("{}a{}b{}c", &[1, 2]), "1a2bc"); // missing arguments are replaced by empty string
+/// assert_eq!(format("{{}}{}", &[1, 2]), "{}1");
+#[cfg(has_std)]
+pub fn format<'a, T: Display + ?Sized + 'a>(fmt: impl AsRef<str>, args: impl IntoIterator<Item=&'a T> + Clone) -> String {
+    format!("{}", Arguments::new(fmt, args))
+}
 
 /// This structure represents a format string combined with its arguments.
-/// In contrast with [`fmt::Arguments`](core::fmt::Arguments) this structure can be easily and safely created at runtime.
+/// In contrast with [`fmt::Arguments`](std::fmt::Arguments) this structure can be easily and safely created at runtime.
 #[derive(Clone, Debug)]
-pub struct Arguments<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> {
+pub struct Arguments<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> {
     fmt: F,
     args: I
 }
 
-impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Arguments<'a, F, T, I> {
-    /// Creates a new instance of a [`Display`](core::fmt::Display)able structure, representing formatted arguments.
-    /// A runtime analog of `format_args!` macro.
+impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> Arguments<'a, F, T, I> {
+    /// Creates a new instance of a [`Display`](std::fmt::Display)able structure, representing formatted arguments.
+    /// A runtime analog of [`format_args!`](std::format_args) macro.
+    /// Extra arguments are ignored, missing arguments are replaced by empty string.
     /// # Examples:
     /// ```rust
     /// dyn_fmt::Arguments::new("{}a{}b{}c", &[1, 2, 3]); // "1a2b3c"
@@ -25,7 +46,7 @@ impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Ar
     pub fn new(fmt: F, args: I) -> Self { Arguments { fmt, args } }
 }
 
-impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Display for Arguments<'a, F, T, I> {
+impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> Display for Arguments<'a, F, T, I> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         #[derive(Eq, PartialEq)]
         enum Brace { Left, Right };
@@ -94,8 +115,8 @@ impl<'a, F: AsRef<str>, T: Display + 'a, I: IntoIterator<Item=&'a T> + Clone> Di
 #[cfg(test)]
 mod tests {
     use crate as dyn_fmt;
-    use core::fmt::{self, Write};
-    use core::str::{self};
+    use std::fmt::{self, Write};
+    use std::str::{self};
 
     struct Writer<'a> {
         buf: &'a mut str,

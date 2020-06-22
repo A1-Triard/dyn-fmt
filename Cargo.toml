@@ -1,6 +1,6 @@
 [package]
 name = "dyn-fmt"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["warlock <internalmike@gmail.com>"]
 description = "Provides dynamic string format."
 readme = "README.md"
@@ -9,3 +9,9 @@ keywords = ["string", "dynamic", "format", "str", "arguments"]
 categories = ["no-std", "value-formatting"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/A1-Triard/dyn-fmt"
+
+[build-dependencies]
+autocfg = "1.0.0"
+
+[workspace]
+members = ["test-no_std"]
