@@ -150,7 +150,7 @@ mod tests {
     use crate as dyn_fmt;
     #[cfg(feature = "std")]
     use AsStrFormatExt;
-    use std::fmt::{self, Write};
+    use std::fmt::{self, Write, Display};
     use std::str::{self};
 
     #[cfg(feature = "std")]
@@ -177,7 +177,7 @@ mod tests {
             Ok(())
         }
     }
-    
+
     #[test]
     fn test_write() {
         let mut buf = [0u8; 128];
@@ -191,6 +191,30 @@ mod tests {
     #[test]
     fn write_args() {
         let args_format = dyn_fmt::Arguments::new("{}{}{}", &[1, 2, 3]);
+        let mut buf = [0u8; 128];
+        let buf = str::from_utf8_mut(&mut buf).unwrap();
+        let mut writer = Writer { buf, len: 0 };
+        write!(&mut writer, "{}", args_format).unwrap();
+        let len = writer.len;
+        assert_eq!("123", &buf[.. len]);
+    }
+
+    #[test]
+    fn write_unsized_args() {
+        let args: &'static [&'static dyn Display] = &[&1, &2, &3];
+        let args_format = dyn_fmt::Arguments::new("{}{}{}", args.into_iter().map(|x| *x));
+        let mut buf = [0u8; 128];
+        let buf = str::from_utf8_mut(&mut buf).unwrap();
+        let mut writer = Writer { buf, len: 0 };
+        write!(&mut writer, "{}", args_format).unwrap();
+        let len = writer.len;
+        assert_eq!("123", &buf[.. len]);
+    }
+
+    #[test]
+    fn format_unsized_args() {
+        let args: &'static [&'static dyn Display] = &[&1, &2, &3];
+        let args_format = "{}{}{}".format(args.into_iter().map(|x| *x));
         let mut buf = [0u8; 128];
         let buf = str::from_utf8_mut(&mut buf).unwrap();
         let mut writer = Writer { buf, len: 0 };
