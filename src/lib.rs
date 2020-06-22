@@ -119,8 +119,19 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
 #[cfg(test)]
 mod tests {
     use crate as dyn_fmt;
+    #[cfg(feature = "std")]
+    use AsStrFormatExt;
     use std::fmt::{self, Write};
     use std::str::{self};
+
+    #[cfg(feature = "std")]
+    #[test]
+    fn test_format() {
+        assert_eq!("{}a{}b{}c".format(&[1, 2, 3]), "1a2b3c");
+        assert_eq!("{}a{}b{}c".format(&[1, 2, 3, 4]), "1a2b3c");
+        assert_eq!("{}a{}b{}c".format(&[1, 2]), "1a2bc");
+        assert_eq!("{{}}{}".format(&[1, 2]), "{}1");
+    }
 
     struct Writer<'a> {
         buf: &'a mut str,

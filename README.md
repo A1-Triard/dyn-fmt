@@ -5,13 +5,13 @@
 Provides dynamic string format.
 
 ```rust
-use dyn_fmt::format;
+use dyn_fmt::AsStrFormatExt;
 
 fn main() {
-    assert_eq!(format("{}a{}b{}c", &[1, 2, 3]), "1a2b3c");
-    assert_eq!(format("{}a{}b{}c", &[1, 2, 3, 4]), "1a2b3c");
-    assert_eq!(format("{}a{}b{}c", &[1, 2]), "1a2bc");
-    assert_eq!(format("{{}}{}", &[1, 2]), "{}1");
+    assert_eq!("{}a{}b{}c".format(&[1, 2, 3]), "1a2b3c");
+    assert_eq!("{}a{}b{}c".format(&[1, 2, 3, 4]), "1a2b3c");
+    assert_eq!("{}a{}b{}c".format(&[1, 2]), "1a2bc");
+    assert_eq!("{{}}{}".format(&[1, 2]), "{}1");
 }
 ```
 ## Comparision
