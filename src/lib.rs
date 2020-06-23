@@ -83,12 +83,10 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         #[derive(Eq, PartialEq)]
         enum Brace { Left, Right };
-        const LEFT_BRACE: u8 = b'{';
-        const RIGHT_BRACE: u8 = b'}';
         fn as_brace(c: u8) -> Option<Brace> {
             match c {
-                LEFT_BRACE => Some(Brace::Left),
-                RIGHT_BRACE => Some(Brace::Right),
+                b'{' => Some(Brace::Left),
+                b'}' => Some(Brace::Right),
                 _ => None
             }
         }
@@ -127,7 +125,7 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
                 },
                 State::Arg => match fmt.as_bytes().first() {
                     None => unsafe { unreachable_unchecked() },
-                    Some(&RIGHT_BRACE) => {
+                    Some(&b'}') => {
                         if let Some(arg) = args.next() {
                             arg.fmt(f)?;
                         }
