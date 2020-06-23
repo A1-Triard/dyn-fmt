@@ -83,8 +83,8 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         #[derive(Eq, PartialEq)]
         enum Brace { Left, Right };
-        const LEFT_BRACE: u8 = '{' as u8;
-        const RIGHT_BRACE: u8 = '}' as u8;
+        const LEFT_BRACE: u8 = b'{';
+        const RIGHT_BRACE: u8 = b'}';
         fn as_brace(c: u8) -> Option<Brace> {
             match c {
                 LEFT_BRACE => Some(Brace::Left),
