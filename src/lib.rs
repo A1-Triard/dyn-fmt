@@ -208,7 +208,7 @@ mod tests {
     #[test]
     fn write_unsized_args() {
         let args: &'static [&'static dyn Display] = &[&1, &2, &3];
-        let args_format = dyn_fmt::Arguments::new("{}{}{}", args.into_iter().map(|x| *x));
+        let args_format = dyn_fmt::Arguments::new("{}{}{}", args.iter().copied());
         let mut buf = [0u8; 128];
         let buf = str::from_utf8_mut(&mut buf).unwrap();
         let mut writer = Writer { buf, len: 0 };
@@ -221,7 +221,7 @@ mod tests {
     #[test]
     fn format_unsized_args() {
         let args: &'static [&'static dyn Display] = &[&1, &2, &3];
-        let args_format = "{}{}{}".format(args.into_iter().map(|x| *x));
+        let args_format = "{}{}{}".format(args.iter().copied());
         let mut buf = [0u8; 128];
         let buf = str::from_utf8_mut(&mut buf).unwrap();
         let mut writer = Writer { buf, len: 0 };
