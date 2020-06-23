@@ -39,7 +39,7 @@ pub trait AsStrFormatExt: AsRef<str> {
 }
 
 #[cfg(feature = "std")]
-impl<T: AsRef<str> + Sized> AsStrFormatExt for T { }
+impl<T: AsRef<str>> AsStrFormatExt for T { }
 
 /// Writes formatted data into a buffer. A runtime analog of [`write!`](std::write) macro.
 /// In contrast with the macro format string have not be a string literal.
