@@ -44,16 +44,27 @@ impl<T: AsRef<str>> AsStrFormatExt for T { }
 /// Writes formatted data into a buffer. A runtime analog of [`write!`](std::write) macro.
 /// In contrast with the macro format string have not be a string literal.
 /// 
-/// This macro accepts a 'writer', a format string, and a list of arguments.
-/// Arguments will be formatted according to the specified format string and the result will be passed to the writer.
+/// This macro accepts three arguments: a writer, a format string, and an arguments iterator.
+/// Arguments will be formatted according to the specified format string by calling `Arguments::new(fmt, args)`,
+/// and the result will be passed to the writer.
+///
 /// The writer may be any value with a `write_fmt` method; generally this comes from an implementation of either
 /// the [`fmt::Write`](std::fmt::Write) or the [`Write`](std::io::Write) trait.
 /// The macro returns whatever the `write_fmt` method returns;
 /// commonly a [`fmt::Result`](std::fmt::Result), or an [`io::Result`](std::io::Result).
+///
+/// # Examples:
+/// ```rust
+/// use dyn_fmt::dyn_write;
+/// use std::fmt::Write;
+/// let mut buf = String::new();
+/// dyn_write!(buf, "{}a{}b{}c", &[1, 2, 3]);
+/// assert_eq!(buf, "1a2b3c");
+/// ```
 #[macro_export]
 macro_rules! dyn_write {
-    ($dst:expr $(, $($arg:expr),+ )? $(,)?) => {
-        write!($dst, "{}", $crate::Arguments::new($($($arg),+)?))
+    ($dst:expr, $fmt:expr, $args:expr $(,)?) => {
+        write!($dst, "{}", $crate::Arguments::new($fmt, $args))
     }
 }
 
@@ -287,5 +298,15 @@ mod tests {
         let buf = str::from_utf8_mut(&mut buf).unwrap();
         let res = display("{}", &[0], buf);
         assert_eq!("0", res);
+    }
+
+    #[test]
+    fn write_macros() {
+        let mut buf = [0u8; 128];
+        let buf = str::from_utf8_mut(&mut buf).unwrap();
+        let mut writer = Writer { buf, len: 0 };
+        dyn_write!(&mut writer, "abcd{}абвгд{}{}", &[1, 2, 3]).unwrap();
+        let len = writer.len;
+        assert_eq!("abcd1абвгд23", &buf[.. len]);
     }
 }
