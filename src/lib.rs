@@ -52,8 +52,8 @@ impl<T: AsRef<str>> AsStrFormatExt for T { }
 /// commonly a [`fmt::Result`](std::fmt::Result), or an [`io::Result`](std::io::Result).
 #[macro_export]
 macro_rules! dyn_write {
-    ($dst:expr, $($arg:tt)*) => {
-        write!($dst, "{}", $crate::Arguments::new($($arg)*))
+    ($dst:expr $(, $($arg:expr),+ )? $(,)?) => {
+        write!($dst, "{}", $crate::Arguments::new($($($arg),+)?))
     }
 }
 
