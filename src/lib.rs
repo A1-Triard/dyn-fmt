@@ -13,12 +13,13 @@
 //! Enabled by default. Disable to make the library `#![no_std]`.
 
 #[cfg(not(feature = "std"))]
-pub(crate) mod std {
-    pub use core::*;
-}
+extern crate core as std;
 
 use std::fmt::{self, Display};
 use std::hint::{unreachable_unchecked};
+
+#[doc(hidden)]
+pub use std::write as std_write;
 
 /// Extends strings with the `format` method, which is a runtime analog of the [`format!`](std::format) macro.
 /// Unavailable in `no_std` environment.
@@ -64,7 +65,7 @@ impl<T: AsRef<str>> AsStrFormatExt for T { }
 #[macro_export]
 macro_rules! dyn_write {
     ($dst:expr, $fmt:expr, $args:expr $(,)?) => {
-        write!($dst, "{}", $crate::Arguments::new($fmt, $args))
+        $crate::std_write!($dst, "{}", $crate::Arguments::new($fmt, $args))
     }
 }
 
