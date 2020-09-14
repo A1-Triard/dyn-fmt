@@ -12,14 +12,14 @@
 //! * `"std"`
 //! Enabled by default. Disable to make the library `#![no_std]`.
 
-#[cfg(not(feature = "std"))]
-extern crate core as std;
+#[cfg(feature = "std")]
+extern crate core;
 
-use std::fmt::{self, Display};
-use std::hint::{unreachable_unchecked};
+use core::fmt::{self, Display};
+use core::hint::{unreachable_unchecked};
 
 #[doc(hidden)]
-pub use std::write as std_write;
+pub use core::write as std_write;
 
 /// Extends strings with the `format` method, which is a runtime analog of the [`format!`](std::format) macro.
 /// Unavailable in `no_std` environment.
@@ -160,8 +160,8 @@ mod tests {
     use crate as dyn_fmt;
     #[cfg(feature = "std")]
     use AsStrFormatExt;
-    use std::fmt::{self, Write, Display};
-    use std::str::{self};
+    use core::fmt::{self, Write, Display};
+    use core::str::{self};
 
     #[cfg(feature = "std")]
     #[test]
