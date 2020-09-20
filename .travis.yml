@@ -9,4 +9,3 @@ script:
 - cargo doc --verbose
 - cargo build --verbose --no-default-features
 - cargo test --verbose --no-default-features
-- cargo doc --verbose --no-default-features
