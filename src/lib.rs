@@ -25,7 +25,7 @@ pub use core::write as std_write;
 /// Unavailable in `no_std` environment.
 #[cfg(feature = "std")]
 pub trait AsStrFormatExt: AsRef<str> {
-    /// Creates a [`String`](std::string::String) replacing the {}s within `self` using provided parameters in the order given.
+    /// Creates a [`String`] replacing the {}s within `self` using provided parameters in the order given.
     /// A runtime analog of [`format!`](std::format) macro. In contrast with the macro format string have not be a string literal.
     /// # Examples:
     /// ```rust
@@ -70,7 +70,7 @@ macro_rules! dyn_write {
 }
 
 /// This structure represents a format string combined with its arguments.
-/// In contrast with [`fmt::Arguments`](std::fmt::Arguments) this structure can be easily and safely created at runtime.
+/// In contrast with [`fmt::Arguments`] this structure can be easily and safely created at runtime.
 #[derive(Clone, Debug)]
 pub struct Arguments<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> {
     fmt: F,
@@ -78,7 +78,7 @@ pub struct Arguments<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterato
 }
 
 impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> Arguments<'a, F, T, I> {
-    /// Creates a new instance of a [`Display`](std::fmt::Display)able structure, representing formatted arguments.
+    /// Creates a new instance of a [`Display`]able structure, representing formatted arguments.
     /// A runtime analog of [`format_args!`](std::format_args) macro.
     /// Extra arguments are ignored, missing arguments are replaced by empty string.
     /// # Examples:
