@@ -1,0 +1,16 @@
+[package]
+edition = "2021"
+name = "ensure_no_std"
+version = "0.0.0"
+publish = false
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+exit-no-std = "0.2.0"
+dyn-fmt = { path = "..", default-features = false }
+arrayvec = { version = "0.7.4", default-features = false }

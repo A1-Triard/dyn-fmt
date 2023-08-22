@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+cd "$(dirname "$(realpath "$0")")"
+
+./build_release || exit 1
+
+triple="$(rustc -Vv | awk -F ': ' '{ if($1 == "host") print $2 }')"
+
+./target/"$triple"/release/ensure_no_std

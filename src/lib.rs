@@ -94,7 +94,7 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
 impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + Clone> Display for Arguments<'a, F, T, I> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         #[derive(Eq, PartialEq)]
-        enum Brace { Left, Right };
+        enum Brace { Left, Right }
         fn as_brace(c: u8) -> Option<Brace> {
             match c {
                 b'{' => Some(Brace::Left),
@@ -105,7 +105,7 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
         let mut args = self.args.clone().into_iter();
         let mut fmt = self.fmt.as_ref();
         let mut piece_end = 0;
-        enum State { Piece, Arg };
+        enum State { Piece, Arg }
         let mut state = State::Piece;
         loop {
             match state {
