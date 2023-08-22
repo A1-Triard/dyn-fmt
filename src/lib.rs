@@ -159,7 +159,7 @@ impl<'a, F: AsRef<str>, T: Display + ?Sized + 'a, I: IntoIterator<Item=&'a T> + 
 mod tests {
     use crate as dyn_fmt;
     #[cfg(feature = "std")]
-    use AsStrFormatExt;
+    use crate::AsStrFormatExt;
     use core::fmt::{self, Write, Display};
     use core::str::{self};
 
