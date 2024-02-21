@@ -308,7 +308,7 @@ mod tests {
     #[cfg(feature = "std")]
     #[test]
     fn test_format_pos() {
-        assert_eq!("{2}a{1}b{0}c".format(&[1, 2, 3]), "3a2b1c");
+        assert_eq!("{2}a中文内{1}b{0}c".format(&[1, 2, 3]), "3a中文内2b1c");
         assert_eq!("{1 }a{ 2}b{0}c".format(&[1, 2, 3, 4]), "2a3b1c");
         assert_eq!("{1}a{ }b{0}c".format(&[1, 2]), "2a1b1c");
         assert_eq!("{1}a{}b{}c".format(&[1, 2, 3]), "2a1b2c");
@@ -329,7 +329,10 @@ mod tests {
     #[test]
     fn test_format_precision() {
         assert_eq!("{2:04.1}a{1}b{0}c".format(&[1, 2, 3]), "0003a2b1c");
-        assert_eq!("{1:05}a{2}b{0:02}c".format(&[1, 2, 3, 4]), "00002a3b01c");
+        assert_eq!(
+            "{1:05}a{2}абвгдb{0:02}c".format(&[1, 2, 3, 4]),
+            "00002a3абвгдb01c"
+        );
         assert_eq!(
             "{  1:.3}a{:4.3}b{0:.2}c".format(&[1.0, 2.123456]),
             "2.123a1.000b1.00c"
