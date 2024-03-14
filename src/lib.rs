@@ -1,4 +1,4 @@
-// #![deny(warnings)]
+#![deny(warnings)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
 //! |        Static format macro         |           Dynamic analog           |
@@ -15,8 +15,7 @@
 #[cfg(feature = "std")]
 extern crate core;
 
-use core::fmt::{self, write, Display};
-use core::hint::unreachable_unchecked;
+use core::fmt::{self, Display};
 
 #[doc(hidden)]
 pub use core::write as std_write;
