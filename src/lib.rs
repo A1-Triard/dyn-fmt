@@ -10,7 +10,7 @@
 //! **Crate features**
 //!
 //! * `"std"`
-//! Enabled by default. Disable to make the library `#![no_std]`.
+//!   Enabled by default. Disable to make the library `#![no_std]`.
 
 #[cfg(feature = "std")]
 extern crate core;

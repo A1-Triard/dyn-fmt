@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest]
         rust: ["1.71", stable, beta, nightly]
     runs-on: ${{ matrix.os }}
     steps:
@@ -42,8 +42,6 @@ jobs:
           triple: x86_64-unknown-linux-gnu
         - os: windows-latest
           triple: x86_64-pc-windows-msvc
-        - os: macOS-latest
-          triple: x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions-rs/toolchain@v1
