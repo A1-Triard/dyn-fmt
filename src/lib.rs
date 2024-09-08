@@ -1,4 +1,6 @@
 #![deny(warnings)]
+#![allow(clippy::needless_doctest_main)]
+
 #![cfg_attr(not(feature = "std"), no_std)]
 
 //! |        Static format macro         |           Dynamic analog           |
@@ -9,6 +11,9 @@
 //!
 //! ## Feature flags
 #![doc=document_features::document_features!()]
+
+#[doc=include_str!("../README.md")]
+type _DocTestReadme = ();
 
 #[cfg(feature = "std")]
 extern crate core;

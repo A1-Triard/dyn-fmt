@@ -1,4 +1,4 @@
-![travis](https://travis-ci.org/A1-Triard/dyn-fmt.svg?branch=master)
+![maintenance: passively maintained](https://img.shields.io/badge/maintenance-passively--maintained-yellowgreen.svg)
 
 # dyn-fmt
 
