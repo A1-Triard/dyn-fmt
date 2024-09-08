@@ -7,10 +7,8 @@
 //! | [`format_args!`](std::format_args) | [`Arguments::new`](Arguments::new) |
 //! |       [`write!`](std::write)       |      [`dyn_write!`](dyn_write)     |
 //!
-//! **Crate features**
-//!
-//! * `"std"`
-//!   Enabled by default. Disable to make the library `#![no_std]`.
+//! ## Feature flags
+#![doc=document_features::document_features!()]
 
 #[cfg(feature = "std")]
 extern crate core;
